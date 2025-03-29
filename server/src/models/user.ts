@@ -25,7 +25,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
 }
 
 export function UserFactory(sequelize: Sequelize): typeof User {
-  (User as typeof Model).init(
+  (User as typeof User).init(
     {
       id: {
         type: DataTypes.INTEGER,
