@@ -12,26 +12,26 @@ export const login = async (req: Request, res: Response) => {
   }
 
   try {
-      // Find user in the database
-      const user = await User.findOne({ username });
+      // Find the user in the database
+      const user = await User.findOne({ where: { username } });
       if (!user) {
           return res.status(401).json({ message: 'Invalid credentials.' });
       }
 
-      // Verify password
+      // Verify the password
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
           return res.status(401).json({ message: 'Invalid credentials.' });
       }
 
-      // Generate JWT
+      // Generate a JWT
       const token = jwt.sign(
-          { id: user.id, username: user.username },
-          process.env.JWT_SECRET_KEY as string,
-          { expiresIn: '1h' } // Token expires in 1 hour
+          { id: user.id, username: user.username }, // Payload
+          process.env.JWT_SECRET_KEY as string,    // Secret Key
+          { expiresIn: '1h' }                      // Expiry Time
       );
 
-      // Send JWT to the client
+      // Send the token to the client
       res.status(200).json({ token });
   } catch (error) {
       console.error('Login error:', error);
