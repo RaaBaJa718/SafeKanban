@@ -1,7 +1,15 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { Router } from 'express';
+
+export const authRoutes = Router();
+
+// Define routes here
+authRoutes.get('/example', (_, res) => {
+  res.send('Example route');
+});
 
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -37,4 +45,5 @@ export const login = async (req: Request, res: Response) => {
       console.error('Login error:', error);
       res.status(500).json({ message: 'An error occurred during login.' });
   }
+    return; // Ensure all code paths return a value
 };
