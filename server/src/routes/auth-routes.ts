@@ -8,6 +8,9 @@ const authRoutes = Router();
 authRoutes.post('/login', async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
+  const user = await User.findOne({ where: { username } });
+console.log('Queried User:', user);
+
   try {
     // Check if user exists
     const user = await User.findOne({ where: { username } });
