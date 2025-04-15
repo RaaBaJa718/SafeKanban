@@ -7,4 +7,6 @@ export interface TicketData {
   status: string | null;
   assignedUserId: number | null;
   assignedUser: UserData | null;
+  priority: string | null; // Example values: "High", "Medium", "Low"
+  dueDate: string | null; // ISO date string (e.g., "2025-04-15T00:00:00Z")
 }
