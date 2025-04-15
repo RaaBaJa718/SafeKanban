@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { User } from '../models/user.js';
+import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+// Load environment variables
+dotenv.config();
 export const login = async (req, res) => {
     const { username, password } = req.body;
     try {
-        // Use Sequelize `where` clause to find user
+        // Find user using Sequelize `where` clause
         const user = await User.findOne({ where: { username } });
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
@@ -15,10 +18,17 @@ export const login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(403).json({ message: 'Invalid credentials.' });
         }
+        // Ensure the JWT secret is available
+        const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
+        if (!jwtSecret) {
+            console.error('JWT secret not found in environment variables.');
+            return res.status(500).json({ message: 'Internal server error.' });
+        }
         // Generate JWT token
-        const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: '1h' // Adjust token expiration time as needed
-        });
+        const accessToken = jwt.sign({ username: user.username, id: user.id }, // Payload
+        jwtSecret, // Secret key
+        { expiresIn: '1h' } // Token expiration time
+        );
         // Respond with the token
         return res.status(200).json({ accessToken });
     }
