@@ -6,12 +6,8 @@ import {
   updateUser,
   deleteUser,
 } from '../../controllers/user-controller.js';
-import { authenticateToken } from '../../middleware/auth'; // Corrected path
 
 const router = express.Router();
-
-// Apply the authenticateToken middleware to all routes
-router.use(authenticateToken);
 
 // GET /users - Get all users
 router.get('/', getAllUsers);
