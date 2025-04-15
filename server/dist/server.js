@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import authRoutes from './routes/auth-routes'; // Corrected path to auth-routes
-import { sequelize } from './models/index'; // Corrected path to models/index
+import authRoutes from './routes/auth-routes.js'; // Corrected path to auth-routes
+import { sequelize } from './models/index.js'; // Corrected path to models/index
 const app = express();
 const PORT = process.env.PORT || 3001;
 // Serves static files for your client-side React app
