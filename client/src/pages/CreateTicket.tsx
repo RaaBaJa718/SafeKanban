@@ -13,7 +13,9 @@ const CreateTicket = () => {
       description: '',
       status: 'Todo',
       assignedUserId: 1,
-      assignedUser: null
+      assignedUser: null,
+      priority: 'Low', // Default priority value
+      dueDate: '' // Default dueDate value
     }
   );
 
