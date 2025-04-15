@@ -1,30 +1,51 @@
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 class AuthService {
-  getProfile() {
-    // TODO: return the decoded token
+  // Decode the JWT token and return the payload
+  getProfile(): JwtPayload | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    return jwtDecode<JwtPayload>(token); // Decode and return the JWT payload
   }
 
-  loggedIn() {
-    // TODO: return a value that indicates if the user is logged in
-  }
-  
-  isTokenExpired(token: string) {
-    // TODO: return a value that indicates if the token is expired
+  // Check if the user is logged in
+  loggedIn(): boolean {
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired(token); // Token exists and is valid
   }
 
-  getToken(): string {
-    // TODO: return the token
+  // Check if the token is expired
+  isTokenExpired(token: string): boolean {
+    try {
+      const { exp } = jwtDecode<JwtPayload>(token); // Extract expiration timestamp from JWT payload
+      if (!exp) {
+        return true; // No expiration field means token is invalid
+      }
+      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+      return exp < currentTime; // Return true if the token is expired
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true; // Invalid token case
+    }
   }
 
-  login(idToken: string) {
-    // TODO: set the token to localStorage
-    // TODO: redirect to the home page
+  // Retrieve the token from localStorage
+  getToken(): string | null {
+    return localStorage.getItem('id_token'); // Token is stored as `id_token`
   }
 
-  logout() {
-    // TODO: remove the token from localStorage
-    // TODO: redirect to the login page
+  // Save the token and redirect to the home page
+  login(idToken: string): void {
+    localStorage.setItem('id_token', idToken); // Save token to localStorage
+    window.location.assign('/'); // Redirect to the home page
+  }
+
+  // Remove the token and redirect to the login page
+  logout(): void {
+    localStorage.removeItem('id_token'); // Remove token from localStorage
+    window.location.assign('/login'); // Redirect to the login page
   }
 }
 
