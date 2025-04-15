@@ -6,18 +6,15 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && node dist/server.js --ignore client",
-    "dev": "nodemon --exec ts-node src/server.ts"
-,
+    "start": "npm run build && node dist/server.js",
+    "dev": "nodemon --exec ts-node src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node dist/seeds/index.js"
   },
   "nodemonConfig": {
-    "watch": [
-      "src"
-    ],
+    "watch": ["src"],
     "ext": "ts,json,js",
-    "exec": "npx tsc && node dist/server.js"
+    "ignore": ["dist", "node_modules"]
   },
   "keywords": [],
   "author": "",
@@ -34,6 +31,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.9",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.1"
   }
 }
